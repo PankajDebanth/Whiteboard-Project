@@ -1,0 +1,31 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f0f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    /* Center the container */
+    padding: 20px;
+    /* Add padding */
+}
+
+@media (max-width: 900px) {
+    .form-wrapper {
+        max-width: 100%;
+        flex: none;
+    }
+}
