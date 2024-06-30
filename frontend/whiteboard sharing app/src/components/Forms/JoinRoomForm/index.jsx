@@ -2,7 +2,7 @@ import "./index.css";
 
 const JoinRoomForm = () => {
   return (
-    <div className="form-wrapper join-room">
+    <div >
       <h2>Join Room</h2>
       <form id="join-room-form">
         <div className="input-group">

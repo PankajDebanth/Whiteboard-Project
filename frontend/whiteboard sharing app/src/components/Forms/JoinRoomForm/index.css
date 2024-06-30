@@ -1,3 +1,4 @@
+/* Wrapper for individual forms */
 .form-wrapper {
   background: #e0e0e0;
   padding: 20px 30px;
@@ -5,12 +6,13 @@
   box-shadow: 9px 9px 16px #bebebe, -9px -9px 16px #ffffff;
   flex: 1;
   min-width: 300px;
+  max-width: 450px; /* Adjust as needed for wider forms */
   text-align: center;
   transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 0; /* Added */
+  margin: 0 20px; /* Margin between forms */
 }
 
 .form-wrapper:hover {

@@ -1,3 +1,4 @@
+/* Wrapper for individual forms */
 .form-wrapper {
     background: #e0e0e0;
     padding: 20px 30px;
@@ -5,14 +6,14 @@
     box-shadow: 9px 9px 16px #bebebe, -9px -9px 16px #ffffff;
     flex: 1;
     min-width: 300px;
+    max-width: 450px; /* Adjust as needed for wider forms */
     text-align: center;
     transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80%;
-    margin: 0;
-}
+    margin: 0 20px; /* Margin between forms */
+  }
 
 .form-wrapper:hover {
     transform: translateY(-10px);
@@ -84,22 +85,3 @@ button:hover {
     background: #5711b0;
     transform: translateY(-3px);
 }
-
-/* 
-.generate-code-btn {
-    background: #ff6f61;
-    box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
-}
-
-.generate-code-btn:hover {
-    background: #e45b4c;
-}
-
-.copy-code-btn {
-    background: #4caf50;
-    box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
-}
-
-.copy-code-btn:hover {
-    background: #45a049;
-} */

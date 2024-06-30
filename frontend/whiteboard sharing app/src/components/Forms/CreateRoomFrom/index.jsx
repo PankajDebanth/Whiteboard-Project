@@ -15,7 +15,7 @@ const CreateRoomForm = () => {
     };
 
     return (
-        <div className="form-wrapper create-room">
+        <div>
             <h2>Create Room</h2>
             <form id="create-room-form">
                 <div className="input-group">
