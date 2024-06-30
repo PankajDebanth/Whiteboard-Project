@@ -5,7 +5,7 @@ import RoomPage from "./pages/RoomPage";
 
 const App = () => {
   return (
-    <div className="container">
+    <div>
       <Routes>
         <Route path="/" element={<Forms />} />
         <Route path="/:roomId" element={ <RoomPage /> }/>

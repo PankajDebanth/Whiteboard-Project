@@ -2,7 +2,7 @@ import './index.css'; // Ensure this path is correct according to your project s
 
 const RoomPage = () => {
   return (
-    <div className="container">
+    <div>
       <header>
         <div className="logo">SyncSketch - A whiteboard</div>
         <div className="room-info">Room: 12345</div>
