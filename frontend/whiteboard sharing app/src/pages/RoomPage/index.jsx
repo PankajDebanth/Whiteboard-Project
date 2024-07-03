@@ -1,6 +1,41 @@
+import React, { useState } from 'react';
+import { Button, Popover, Box } from '@mui/material';
+import { ChromePicker } from 'react-color';
 import './index.css'; // Ensure this path is correct according to your project structure
+import Whiteboard from '../../components/Whiteboard';
 
 const RoomPage = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [colorAnchorEl, setColorAnchorEl] = useState(null);
+  const [tool, setTool] = useState('');
+  const [color, setColor] = useState('black');
+
+  const handleShapesClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleColorClick = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleColorClose = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleColorChange = (color) => {
+    setColor(color.hex);
+    // handleColorClose();
+  };
+
+  const open = Boolean(anchorEl);
+  const colorOpen = Boolean(colorAnchorEl);
+  const id = open ? 'shapes-popover' : undefined;
+  const colorId = colorOpen ? 'color-popover' : undefined;
+
   return (
     <div>
       <header>
@@ -13,21 +48,54 @@ const RoomPage = () => {
       </header>
       <div className="main-content">
         <aside className="toolbox">
-          <div className="tool" title="Pencil">✏️</div>
-          <div className="tool" title="Shapes">⬛</div>
+        <div className="tool" title="Color" onClick={handleColorClick}>
+            🎨
+          </div>
+          <Popover
+            id={colorId}
+            open={colorOpen}
+            anchorEl={colorAnchorEl}
+            onClose={handleColorClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <ChromePicker color={color} onChangeComplete={handleColorChange} />
+          </Popover>
+          <div className="tool" title="Pencil" value="pencil" onClick={() => setTool('pencil')}>✏️</div>
+          <div className="tool" title="Shapes" onClick={handleShapesClick}>⬛</div>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <Box className="shapes-popover">
+              <Button className="shape-option" title="Line" startIcon={<span>➖</span>} onClick={() => setTool('line')}>
+                Line
+              </Button>
+              <Button className="shape-option" title="Rectangle" startIcon={<span>▭</span>} onClick={() => setTool('rectangle')}>
+                Rectangle
+              </Button>
+              <Button className="shape-option" title="Circle" startIcon={<span>⬤</span>} onClick={() => setTool('circle')}>
+                Circle
+              </Button>
+            </Box>
+          </Popover>
           <div className="tool" title="Text">🔤</div>
-          <div className="tool" title="Eraser">🧽</div>
+          <div className="tool" title="Clear Canvas">🧽</div>
           <div className="tool" title="Select">🔲</div>
-          <div className="tool" title="Sticky Notes">📝</div>
+          {/* <div className="tool" title="Sticky Notes">📝</div> */}
           <div className="tool" title="Upload">📁</div>
           <div className="tool" title="Undo">↺</div>
           <div className="tool" title="Redo">↻</div>
-          {/* <div className="tool" title="Zoom In">🔍</div>
-          <div className="tool" title="Zoom Out">🔎</div> */}
         </aside>
-        <div className="canvas">
-          <div className="canvas-placeholder">Your collaborative canvas will appear here</div>
-        </div>
+        <Whiteboard/>
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>
           <div className="collaborator">👤 User2</div>
@@ -39,12 +107,6 @@ const RoomPage = () => {
           <div className="video-call">📹 Video Call</div>
         </aside>
       </div>
-      {/* <footer>
-        <div className="page-nav">Page 1 of 1</div>
-        <div className="zoom-level">Zoom: 100%</div>
-        <button className="save-button">Save</button>
-        <button className="export-button">Export</button>
-      </footer> */}
     </div>
   );
 };

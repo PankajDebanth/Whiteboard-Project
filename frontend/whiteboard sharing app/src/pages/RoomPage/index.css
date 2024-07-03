@@ -163,3 +163,16 @@ footer {
 .save-button:hover, .export-button:hover {
     background-color: #45a049;
 }
+
+.shapes-popover {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+  }
+  
+  .shape-option {
+    min-width: 100px; /* Adjust this value to make the buttons smaller */
+    margin: 5px 0; /* Add some margin between the buttons */
+  }
+  
+  
