@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Popover, Box } from '@mui/material';
 import { ChromePicker } from 'react-color';
 import './index.css'; // Ensure this path is correct according to your project structure
@@ -9,6 +9,11 @@ const RoomPage = () => {
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
   const [tool, setTool] = useState('');
   const [color, setColor] = useState('black');
+
+  const canvasRef = useRef(null);
+  const ctxRef = useRef(null);
+  const [elements, setElements] = useState([]);
+
 
   const handleShapesClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -95,7 +100,7 @@ const RoomPage = () => {
           <div className="tool" title="Undo">↺</div>
           <div className="tool" title="Redo">↻</div>
         </aside>
-        <Whiteboard/>
+        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements}/>
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>
           <div className="collaborator">👤 User2</div>
