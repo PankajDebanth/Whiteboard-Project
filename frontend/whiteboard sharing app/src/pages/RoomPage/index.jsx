@@ -100,7 +100,7 @@ const RoomPage = () => {
           <div className="tool" title="Undo">↺</div>
           <div className="tool" title="Redo">↻</div>
         </aside>
-        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements}/>
+        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool}/>
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>
           <div className="collaborator">👤 User2</div>
