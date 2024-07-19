@@ -15,17 +15,23 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool }) => {
 
   useLayoutEffect(() => {
     const roughCanvas = rough.canvas(canvasRef.current);
+    if (elements.length > 0) {
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+    }
     elements.forEach((element) => {
-      if (element.type == "pencil") {
+      if (element.type === "pencil") {
         roughCanvas.linearPath(element.path);
-      } else if (element.typr == "line") {
-        roughGenerator.draw(
-          roughGenerator.line(
-            element.offsetX,
-            element.offsetY,
-            element.width,
-            element.height,
-          )
+      } else if (element.type === "line") {
+        roughCanvas.line(
+          element.offsetX,
+          element.offsetY,
+          element.width,
+          element.height
         );
       }
     });
@@ -33,41 +39,55 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool }) => {
 
   const handleMouseDown = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
-    if (tool == "pencil") {
-      setElements((prevELements) => [
-        ...prevELements,
+    if (tool === "pencil") {
+      setElements((prevElements) => [
+        ...prevElements,
         {
           type: "pencil",
           offsetX,
           offsetY,
           path: [[offsetX, offsetY]],
-          storke: "black",
+          stroke: "black",
         },
       ]);
-    } else if (tool == "line") {
-      setElements((prevELements) => [
-        ...prevELements,
+    } else if (tool === "line") {
+      setElements((prevElements) => [
+        ...prevElements,
         {
           type: "line",
           offsetX,
           offsetY,
           width: offsetX,
           height: offsetY,
-          storke: "black",
+          stroke: "black",
+        },
+      ]);
+    }
+    else if (tool === "rect") {
+      setElements((prevElements) => [
+        ...prevElements,
+        {
+          type: "rect",
+          offsetX,
+          offsetY,
+          width: offsetX,
+          height: offsetY,
+          stroke: "black",
         },
       ]);
     }
     setIsDrawing(true);
   };
+
   const handleMouseMove = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
     if (isDrawing) {
-      if (tool == "pencil") {
+      if (tool === "pencil") {
         const { path } = elements[elements.length - 1];
         const newPath = [...path, [offsetX, offsetY]];
 
-        setElements((prevELements) =>
-          prevELements.map((ele, index) => {
+        setElements((prevElements) =>
+          prevElements.map((ele, index) => {
             if (index === elements.length - 1) {
               return {
                 ...ele,
@@ -78,10 +98,10 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool }) => {
             }
           })
         );
-      } else if (tool == "line") {
-        setElements((prevELements) =>
-          prevELements.map((ele, index) => {
-            if (index == elements.length - 1) {
+      } else if (tool === "line") {
+        setElements((prevElements) =>
+          prevElements.map((ele, index) => {
+            if (index === elements.length - 1) {
               return {
                 ...ele,
                 width: offsetX,
@@ -92,19 +112,18 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool }) => {
             }
           })
         );
+      } else if (tool === "rect") {
+
       }
     }
   };
-  const handleMouseUp = (e) => {
-    const { offsetX, offsetY } = e.nativeEvent;
-    // console.log("offsetX", offsetX);
-    // console.log("offsetY", offsetY);
+
+  const handleMouseUp = () => {
     setIsDrawing(false);
   };
 
   return (
     <>
-      {/* {JSON.stringify(elements)} */}
       <div
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -112,7 +131,6 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool }) => {
       >
         <canvas className="canvas" ref={canvasRef} />
       </div>
-      
     </>
   );
 };

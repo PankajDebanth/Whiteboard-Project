@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Button, Popover, Box } from '@mui/material';
 import { ChromePicker } from 'react-color';
-import './index.css'; // Ensure this path is correct according to your project structure
+import './index.css';
 import Whiteboard from '../../components/Whiteboard';
 
 const RoomPage = () => {
@@ -13,7 +13,6 @@ const RoomPage = () => {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [elements, setElements] = useState([]);
-
 
   const handleShapesClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,7 +32,11 @@ const RoomPage = () => {
 
   const handleColorChange = (color) => {
     setColor(color.hex);
-    // handleColorClose();
+  };
+
+  const handleToolSelect = (selectedTool) => {
+    setTool(selectedTool);
+    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -53,7 +56,7 @@ const RoomPage = () => {
       </header>
       <div className="main-content">
         <aside className="toolbox">
-        <div className="tool" title="Color" onClick={handleColorClick}>
+          <div className="tool" title="Color" onClick={handleColorClick}>
             🎨
           </div>
           <Popover
@@ -68,8 +71,12 @@ const RoomPage = () => {
           >
             <ChromePicker color={color} onChangeComplete={handleColorChange} />
           </Popover>
-          <div className="tool" title="Pencil" value="pencil" onClick={() => setTool('pencil')}>✏️</div>
-          <div className="tool" title="Shapes" onClick={handleShapesClick}>⬛</div>
+          <div className="tool" title="Pencil" onClick={() => setTool('pencil')}>
+            ✏️
+          </div>
+          <div className="tool" title="Shapes" onClick={handleShapesClick}>
+            ⬛
+          </div>
           <Popover
             id={id}
             open={open}
@@ -81,13 +88,13 @@ const RoomPage = () => {
             }}
           >
             <Box className="shapes-popover">
-              <Button className="shape-option" title="Line" startIcon={<span>➖</span>} onClick={() => setTool('line')}>
+              <Button className="shape-option" title="Line" startIcon={<span>➖</span>} onClick={() => handleToolSelect('line')}>
                 Line
               </Button>
-              <Button className="shape-option" title="Rectangle" startIcon={<span>▭</span>} onClick={() => setTool('rectangle')}>
+              <Button className="shape-option" title="Rectangle" startIcon={<span>▭</span>} onClick={() => handleToolSelect('rectangle')}>
                 Rectangle
               </Button>
-              <Button className="shape-option" title="Circle" startIcon={<span>⬤</span>} onClick={() => setTool('circle')}>
+              <Button className="shape-option" title="Circle" startIcon={<span>⬤</span>} onClick={() => handleToolSelect('circle')}>
                 Circle
               </Button>
             </Box>
@@ -95,12 +102,11 @@ const RoomPage = () => {
           <div className="tool" title="Text">🔤</div>
           <div className="tool" title="Clear Canvas">🧽</div>
           <div className="tool" title="Select">🔲</div>
-          {/* <div className="tool" title="Sticky Notes">📝</div> */}
           <div className="tool" title="Upload">📁</div>
           <div className="tool" title="Undo">↺</div>
           <div className="tool" title="Redo">↻</div>
         </aside>
-        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool}/>
+        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} />
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>
           <div className="collaborator">👤 User2</div>
