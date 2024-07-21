@@ -174,5 +174,10 @@ footer {
     min-width: 100px; /* Adjust this value to make the buttons smaller */
     margin: 5px 0; /* Add some margin between the buttons */
   }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
   
   

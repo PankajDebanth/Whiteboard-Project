@@ -1,18 +1,19 @@
-import { useRef, useState } from 'react';
-import { Button, Popover, Box } from '@mui/material';
-import { ChromePicker } from 'react-color';
-import './index.css';
-import Whiteboard from '../../components/Whiteboard';
+import { useRef, useState } from "react";
+import { Button, Popover, Box } from "@mui/material";
+import { ChromePicker } from "react-color";
+import "./index.css";
+import Whiteboard from "../../components/Whiteboard";
 
 const RoomPage = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [colorAnchorEl, setColorAnchorEl] = useState(null);
-  const [tool, setTool] = useState('');
-  const [color, setColor] = useState('black');
-
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [colorAnchorEl, setColorAnchorEl] = useState(null);
+  const [tool, setTool] = useState("pencil");
+  const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
+  const [history, setHistory] = useState([]);
 
   const handleShapesClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,8 +42,42 @@ const RoomPage = () => {
 
   const open = Boolean(anchorEl);
   const colorOpen = Boolean(colorAnchorEl);
-  const id = open ? 'shapes-popover' : undefined;
-  const colorId = colorOpen ? 'color-popover' : undefined;
+  const id = open ? "shapes-popover" : undefined;
+  const colorId = colorOpen ? "color-popover" : undefined;
+
+  const handleClearCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.fillRect = "White";
+    ctxRef.current.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+    setElements([]);
+  };
+
+  const handleUndo = ()=>{
+    setHistory((prevHistory) =>[
+      ...prevHistory,
+      elements[elements.length - 1],
+      setElements((prevElements)=>
+        prevElements.slice(0, prevElements.length - 1)
+      )
+    ])
+  };
+
+  const handleRedo = () => {
+    if (history.length > 0) {
+      const lastHistoryItem = history[history.length - 1];
+      setElements((prevElements) => [...prevElements, lastHistoryItem]);
+      setHistory((prevHistory) =>
+        prevHistory.slice(0, prevHistory.length - 1)
+      );
+    }
+  };
+  
 
   return (
     <div>
@@ -65,13 +100,17 @@ const RoomPage = () => {
             anchorEl={colorAnchorEl}
             onClose={handleColorClose}
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
+              vertical: "bottom",
+              horizontal: "right",
             }}
           >
             <ChromePicker color={color} onChangeComplete={handleColorChange} />
           </Popover>
-          <div className="tool" title="Pencil" onClick={() => setTool('pencil')}>
+          <div
+            className="tool"
+            title="Pencil"
+            onClick={() => setTool("pencil")}
+          >
             ✏️
           </div>
           <div className="tool" title="Shapes" onClick={handleShapesClick}>
@@ -83,37 +122,91 @@ const RoomPage = () => {
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
+              vertical: "bottom",
+              horizontal: "right",
             }}
           >
             <Box className="shapes-popover">
-              <Button className="shape-option" title="Line" startIcon={<span>➖</span>} onClick={() => handleToolSelect('line')}>
+              <Button
+                className="shape-option"
+                title="Line"
+                startIcon={<span>➖</span>}
+                onClick={() => handleToolSelect("line")}
+              >
                 Line
               </Button>
-              <Button className="shape-option" title="Rectangle" startIcon={<span>▭</span>} onClick={() => handleToolSelect('rectangle')}>
+              <Button
+                className="shape-option"
+                title="Rectangle"
+                startIcon={<span>▭</span>}
+                onClick={() => handleToolSelect("rect")}
+              >
                 Rectangle
               </Button>
-              <Button className="shape-option" title="Circle" startIcon={<span>⬤</span>} onClick={() => handleToolSelect('circle')}>
+              <Button
+                className="shape-option"
+                title="Circle"
+                startIcon={<span>⬤</span>}
+                onClick={() => handleToolSelect("circle")}
+              >
                 Circle
               </Button>
             </Box>
           </Popover>
-          <div className="tool" title="Text">🔤</div>
-          <div className="tool" title="Clear Canvas">🧽</div>
-          <div className="tool" title="Select">🔲</div>
-          <div className="tool" title="Upload">📁</div>
-          <div className="tool" title="Undo">↺</div>
-          <div className="tool" title="Redo">↻</div>
+          <div className="tool" title="Text">
+            🔤
+          </div>
+          <div
+            className="tool"
+            title="Clear Canvas"
+            onClick={handleClearCanvas}
+          >
+            🧽
+          </div>
+          <div className="tool" title="Select">
+            🔲
+          </div>
+          <div className="tool" title="Upload">
+            📁
+          </div>
+          <div
+            className={`tool ${elements.length === 0 ? "disabled" : ""}`}
+            title="Undo"
+            onClick={() => 
+              handleUndo()
+            }
+          >
+            ↺
+          </div>
+          <div
+            className={`tool ${history.length < 1 ? "disabled" : ""}`}
+            title="Redo"
+            onClick={() => 
+              handleRedo()
+            }
+          >
+            ↻
+          </div>
         </aside>
-        <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} />
+        <Whiteboard
+          canvasRef={canvasRef}
+          ctxRef={ctxRef}
+          elements={elements}
+          setElements={setElements}
+          tool={tool}
+          color={color}
+        />
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>
           <div className="collaborator">👤 User2</div>
           <div className="chat">
             <div className="chat-header">Chat</div>
             <div className="chat-messages"></div>
-            <input type="text" className="chat-input" placeholder="Type a message..." />
+            <input
+              type="text"
+              className="chat-input"
+              placeholder="Type a message..."
+            />
           </div>
           <div className="video-call">📹 Video Call</div>
         </aside>
