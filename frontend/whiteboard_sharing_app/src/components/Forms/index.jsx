@@ -1,14 +1,12 @@
-// import CreateRoomForm from './CreateRoomForm';
 import CreateRoomForm from "./CreateRoomFrom";
 import JoinRoomForm from "./JoinRoomForm";
 import './index.css';
 
-
-const Forms = () => {
+const Forms = ({uuid, socket, setUser}) => {
   return (
     <div className="forms-container">
       <div className="form-wrapper create-room">
-        <CreateRoomForm />
+        <CreateRoomForm uuid={uuid} socket={socket} setUser={setUser}/>
       </div>
       <div className="form-wrapper join-room">
         <JoinRoomForm />
