@@ -6,11 +6,11 @@ const { Server } = require('socket.io');
 
 const io = new Server(server);
 
-io.on('connection',(socket)=>{
+io.on("connection",(socket)=>{
     socket.on("userJoined", (data)=>{
         const [name, roomName, description, roomId, userId, host, presenter] = data;
         socket.join(roomId);
-        socket.emit("userIsJoined", {success: true});
+        socket.emit("userIsJoined", {success: true}); 
     })
 })
 

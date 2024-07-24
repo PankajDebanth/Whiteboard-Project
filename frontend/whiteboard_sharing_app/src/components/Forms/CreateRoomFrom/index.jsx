@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreateRoomForm = ({uuid, socket, setUser}) => {
     const [roomId, setRoomId] = useState(uuid());
     const [roomName, setRoomName] = useState("");
     const [description, setDescription] = useState("");
     const [name, setName] = useState("");
+
+    const navigate = useNavigate();
 
 
     const generateCode = () => {
@@ -31,6 +34,8 @@ const CreateRoomForm = ({uuid, socket, setUser}) => {
         console.log("roomData", roomData);
 
         setUser(roomData);
+        navigate(`/${roomId}`);
+        console.log(roomData);
         socket.emit("userjoined", roomData)
     };
 

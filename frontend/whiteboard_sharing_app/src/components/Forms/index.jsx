@@ -9,7 +9,7 @@ const Forms = ({uuid, socket, setUser}) => {
         <CreateRoomForm uuid={uuid} socket={socket} setUser={setUser}/>
       </div>
       <div className="form-wrapper join-room">
-        <JoinRoomForm />
+        <JoinRoomForm uuid={uuid} socket={socket} setUser={setUser}/>
       </div>
     </div>
   );
