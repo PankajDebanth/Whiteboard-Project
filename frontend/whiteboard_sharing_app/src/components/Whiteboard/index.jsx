@@ -12,21 +12,20 @@ const Whiteboard = ({
 }) => {
   const [isDrawing, setIsDrawing] = useState(false);
 
-useEffect(() => {
-  const canvas = canvasRef.current;
-  if (canvas) {
-    canvas.height = window.innerHeight / 1.25;
-    canvas.width = window.innerWidth / 1.7;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
-      ctx.lineCap = "round";
-      ctxRef.current = ctx;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = 900; // Match the CSS width
+      canvas.height = 517; // Match the CSS height
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctxRef.current = ctx;
+      }
     }
-  }
-}, [color]); // Ensure that color changes are applied
-
+  }, [color]);
 
   useEffect(() => {
     ctxRef.current.strokeStyle = color;
@@ -35,10 +34,10 @@ useEffect(() => {
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !ctxRef.current) return;
-  
+
     const roughCanvas = rough.canvas(canvas);
     ctxRef.current.clearRect(0, 0, canvas.width, canvas.height);
-  
+
     elements.forEach((element) => {
       if (!element) return;
       switch (element.type) {
@@ -82,11 +81,16 @@ useEffect(() => {
             Math.pow(element.width, 2) + Math.pow(element.height, 2)
           );
           roughCanvas.draw(
-            roughGenerator.circle(element.offsetX, element.offsetY, radius * 2, {
-              stroke: element.stroke,
-              strokeWidth: 5,
-              roughness: 0,
-            })
+            roughGenerator.circle(
+              element.offsetX,
+              element.offsetY,
+              radius * 2,
+              {
+                stroke: element.stroke,
+                strokeWidth: 5,
+                roughness: 0,
+              }
+            )
           );
           break;
         default:
@@ -94,7 +98,6 @@ useEffect(() => {
       }
     });
   }, [elements]);
-  
 
   const handleMouseDown = (e) => {
     const { offsetX, offsetY } = e.nativeEvent;
