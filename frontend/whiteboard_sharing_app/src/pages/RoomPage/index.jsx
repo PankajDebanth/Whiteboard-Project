@@ -4,7 +4,7 @@ import { ChromePicker } from "react-color";
 import "./index.css";
 import Whiteboard from "../../components/Whiteboard";
 
-const RoomPage = ({ user }) => {
+const RoomPage = ({ user, socket }) => {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
 
@@ -214,6 +214,8 @@ const RoomPage = ({ user }) => {
           setElements={setElements}
           tool={tool}
           color={color}
+          user={user}
+          socket={socket}
         />
         <aside className="collaborators">
           <div className="collaborator">👤 User1</div>

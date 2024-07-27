@@ -9,7 +9,27 @@ const Whiteboard = ({
   setElements,
   tool,
   color,
+  user,
+  socket,
 }) => {
+  const [img, setImg] = useState(null);
+  
+  useEffect(()=>{
+    socket.on("whiteboardDataResponse", (data)=>{
+      setImg(data.imgURL);
+    })
+  },[])
+
+  if (!user?.presenter) {
+    return (
+      <div className="canvas">
+        <img
+          src=""
+          alt="Real time whiteboad image shared by presenter"
+        />
+      </div>
+    );
+  }
   const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
@@ -30,6 +50,7 @@ const Whiteboard = ({
   useEffect(() => {
     ctxRef.current.strokeStyle = color;
   }, [color]);
+
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -97,6 +118,9 @@ const Whiteboard = ({
           break;
       }
     });
+
+    const canvasImage = canvasRef.current.toDataURL("image/png");
+    socket.emit("whiteboardData", canvasImage)
   }, [elements]);
 
   const handleMouseDown = (e) => {
@@ -220,6 +244,8 @@ const Whiteboard = ({
   const handleMouseUp = () => {
     setIsDrawing(false);
   };
+
+
 
   return (
     <>
