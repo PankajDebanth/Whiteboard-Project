@@ -24,7 +24,7 @@ const Whiteboard = ({
     return (
       <div className="canvas">
         <img
-          src=""
+          src={img}
           alt="Real time whiteboad image shared by presenter"
         />
       </div>
