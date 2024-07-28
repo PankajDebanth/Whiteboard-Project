@@ -17,8 +17,9 @@ const Whiteboard = ({
   useEffect(()=>{
     socket.on("whiteboardDataResponse", (data)=>{
       setImg(data.imgURL);
+      console.log("img", img);
     })
-  },[])
+  },[img])
 
   if (!user?.presenter) {
     return (
@@ -27,6 +28,10 @@ const Whiteboard = ({
           src={img}
           alt="Real time whiteboad image shared by presenter"
         />
+        <h4>54</h4>
+        {img}
+
+
       </div>
     );
   }
@@ -244,7 +249,6 @@ const Whiteboard = ({
   const handleMouseUp = () => {
     setIsDrawing(false);
   };
-
 
 
   return (

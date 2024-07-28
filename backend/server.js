@@ -33,4 +33,4 @@ app.get('/', (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
-server.listen(port, () => console.log('Server is listening and running'));
+server.listen(port, () => console.log('Server is listening and running', port));
