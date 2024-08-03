@@ -18,7 +18,7 @@ const JoinRoomForm = ({uuid, socket, setUser}) => {
     }
     setUser(roomData);
     navigate(`/${roomId}`)
-    socket.emit("userjoined", roomData);
+    socket.emit("userJoined", roomData);
   };
 
   return (

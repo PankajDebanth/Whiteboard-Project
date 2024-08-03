@@ -2,40 +2,24 @@ import { useEffect, useState, useLayoutEffect } from "react";
 import rough from "roughjs";
 
 const roughGenerator = rough.generator();
-const Whiteboard = ({
-  canvasRef,
-  ctxRef,
-  elements,
-  setElements,
-  tool,
-  color,
-  user,
-  socket,
-}) => {
+const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool, color, user, socket }) => {
   const [img, setImg] = useState(null);
-  
-  useEffect(()=>{
-    socket.on("whiteboardDataResponse", (data)=>{
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useEffect(() => {
+    socket.on("whiteboardDataResponse", (data) => {
       setImg(data.imgURL);
       console.log("img", img);
-    })
-  },[img])
+    });
+  }, [img]);
 
   if (!user?.presenter) {
     return (
       <div className="canvas">
-        <img
-          src={img}
-          alt="Real time whiteboad image shared by presenter"
-        />
-        <h4>54</h4>
-        {img}
-
-
+        <img src={img} alt="Real time whiteboad image shared by presenter" />
       </div>
     );
   }
-  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,7 +40,6 @@ const Whiteboard = ({
     ctxRef.current.strokeStyle = color;
   }, [color]);
 
-
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !ctxRef.current) return;
@@ -75,48 +58,29 @@ const Whiteboard = ({
           });
           break;
         case "line":
-          roughCanvas.line(
-            element.offsetX,
-            element.offsetY,
-            element.width,
-            element.height,
-            {
-              stroke: element.stroke,
-              strokeWidth: 5,
-              roughness: 0,
-            }
-          );
+          roughCanvas.line(element.offsetX, element.offsetY, element.width, element.height, {
+            stroke: element.stroke,
+            strokeWidth: 5,
+            roughness: 0,
+          });
           break;
         case "rect":
           roughCanvas.draw(
-            roughGenerator.rectangle(
-              element.offsetX,
-              element.offsetY,
-              element.width,
-              element.height,
-              {
-                stroke: element.stroke,
-                strokeWidth: 5,
-                roughness: 0,
-              }
-            )
+            roughGenerator.rectangle(element.offsetX, element.offsetY, element.width, element.height, {
+              stroke: element.stroke,
+              strokeWidth: 5,
+              roughness: 0,
+            })
           );
           break;
         case "circle":
-          const radius = Math.sqrt(
-            Math.pow(element.width, 2) + Math.pow(element.height, 2)
-          );
+          const radius = Math.sqrt(Math.pow(element.width, 2) + Math.pow(element.height, 2));
           roughCanvas.draw(
-            roughGenerator.circle(
-              element.offsetX,
-              element.offsetY,
-              radius * 2,
-              {
-                stroke: element.stroke,
-                strokeWidth: 5,
-                roughness: 0,
-              }
-            )
+            roughGenerator.circle(element.offsetX, element.offsetY, radius * 2, {
+              stroke: element.stroke,
+              strokeWidth: 5,
+              roughness: 0,
+            })
           );
           break;
         default:
@@ -125,7 +89,7 @@ const Whiteboard = ({
     });
 
     const canvasImage = canvasRef.current.toDataURL("image/png");
-    socket.emit("whiteboardData", canvasImage)
+    socket.emit("whiteboardData", canvasImage);
   }, [elements]);
 
   const handleMouseDown = (e) => {
@@ -232,11 +196,7 @@ const Whiteboard = ({
         setElements((prevElements) =>
           prevElements.map((ele, index) => {
             if (index === elements.length - 1) {
-              return {
-                ...ele,
-                width: offsetX - ele.offsetX,
-                height: offsetY - ele.offsetY,
-              };
+              return { ...ele, width: offsetX - ele.offsetX, height: offsetY - ele.offsetY };
             } else {
               return ele;
             }
@@ -250,14 +210,9 @@ const Whiteboard = ({
     setIsDrawing(false);
   };
 
-
   return (
     <>
-      <div
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      >
+      <div onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
         <canvas className="canvas" ref={canvasRef} />
       </div>
     </>
