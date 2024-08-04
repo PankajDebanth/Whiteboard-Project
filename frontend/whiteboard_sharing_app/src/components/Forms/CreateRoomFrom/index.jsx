@@ -1,31 +1,35 @@
 import { useState } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const CreateRoomForm = ({ uuid, socket, setUser }) => {
   const [roomId, setRoomId] = useState(uuid());
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const generateCode = () => {
-    const code = Math.random().toString(36).substr(2, 8).toUpperCase();
-    setGeneratedCode(code);
+  const copyCode = () => {
+    navigator.clipboard
+      .writeText(roomId)
+      .then(() => {
+        toast.success("Code copied: " + roomId, { className: "toast-style" });
+      })
+      .catch((error) => {
+        toast.error("Could not copy text: " + error, { className: "toast-style" });
+      });
   };
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(generatedCode);
-    alert("Code copied: " + generatedCode);
-  };
   const handleCreateRoom = (e) => {
     e.preventDefault();
     if (!name.trim()) {
-      setErrorMessage("Admin Name is required");
+      toast.error("Admin Name is required", { className: "toast-style" });
+      return;
+    }
+    if (!roomName.trim()) {
+      toast.error("Room Name is required", { className: "toast-style" });
       return;
     }
     const roomData = {
@@ -37,12 +41,9 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
       host: true,
       presenter: true,
     };
-    console.log("roomData", roomData);
 
     setUser(roomData);
     navigate(`/${roomId}`);
-    console.log(roomData);
-    console.log("socket.emit('userJoined', roomData)", socket.emit("userJoined", roomData));
     socket.emit("userJoined", roomData);
   };
 
@@ -54,7 +55,6 @@ const CreateRoomForm = ({ uuid, socket, setUser }) => {
           <label htmlFor="admin-name">Admin Name</label>
           <input type="text" id="admin-name" name="admin-name" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="input-group">
           <label htmlFor="room-name">Room Name</label>
           <input type="text" id="room-name" name="room-name" value={roomName} onChange={(e) => setRoomName(e.target.value)} required />

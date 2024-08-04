@@ -1,7 +1,6 @@
 // server.js
 const express = require("express");
 const app = express();
-
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const cors = require("cors");
@@ -51,6 +50,7 @@ io.on("connection", (socket) => {
     if (user) {
       const users = getUsersInRoom(user.roomId);
       io.in(user.roomId).emit("allUsers", users);
+      io.in(user.roomId).emit("userLeft", user.name);
     }
   });
 });

@@ -9,7 +9,6 @@ const Whiteboard = ({ canvasRef, ctxRef, elements, setElements, tool, color, use
   useEffect(() => {
     socket.on("whiteboardDataResponse", (data) => {
       setImg(data.imgURL);
-      console.log("img", img);
     });
   }, [img]);
 

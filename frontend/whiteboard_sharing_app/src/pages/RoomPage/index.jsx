@@ -1,9 +1,11 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Button, Popover, Box } from "@mui/material";
 import { ChromePicker } from "react-color";
 import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import "./index.css";
 import Whiteboard from "../../components/Whiteboard";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const RoomPage = ({ user, socket, users }) => {
   const canvasRef = useRef(null);
@@ -16,10 +18,6 @@ const RoomPage = ({ user, socket, users }) => {
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
   const [history, setHistory] = useState([]);
-
-  useEffect(() => {
-    console.log("users", users);
-  }, [users]);
 
   const handleShapesClick = (event) => {
     if (user?.presenter) {
@@ -82,11 +80,25 @@ const RoomPage = ({ user, socket, users }) => {
     }
   };
 
+  const copyRoomId = () => {
+    navigator.clipboard
+      .writeText(roomId)
+      .then(() => {
+        toast.success("Room ID copied to clipboard!",);
+      })
+      .catch((error) => {
+        toast.error("Failed to copy Room ID: " + error.message,);
+      });
+  };
+
   return (
     <div>
       <header>
         <div className="logo">SyncSketch - A whiteboard</div>
-        <div className="room-info">Room: {roomId}</div>
+        <div className="room-info">
+          Room: {roomId} &nbsp;
+          <i className="fa-solid fa-copy copy-icon" style={{ cursor: "pointer" }} onClick={copyRoomId}></i> {/* Font Awesome Copy Icon */}
+        </div>
         <div className="user-profile">
           <div className="user-name">{user?.name}</div>
           <div className="settings-icon">⚙️</div>
@@ -160,7 +172,7 @@ const RoomPage = ({ user, socket, users }) => {
         <aside className="collaborators">
           {users.map((collaborator, index) => (
             <div key={index} className="collaborator">
-              👤 {collaborator.name}
+              👤 {collaborator.name} {user && user.userId === collaborator.userId && "(You)"}
             </div>
           ))}
           <div className="chat">
