@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import "./index.css";
 import Whiteboard from "../../components/Whiteboard";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Chat from "../../components/Chat/Chat";
 
 const RoomPage = ({ user, socket, users }) => {
   const canvasRef = useRef(null);
@@ -175,11 +176,7 @@ const RoomPage = ({ user, socket, users }) => {
               👤 {collaborator.name} {user && user.userId === collaborator.userId && "(You)"}
             </div>
           ))}
-          <div className="chat">
-            <div className="chat-header">Chat</div>
-            <div className="chat-messages"></div>
-            <input type="text" className="chat-input" placeholder="Type a message..." />
-          </div>
+          <Chat/>
           <div className="video-call">📹 Video Call</div>
         </aside>
       </div>
