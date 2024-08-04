@@ -176,7 +176,7 @@ const RoomPage = ({ user, socket, users }) => {
               👤 {collaborator.name} {user && user.userId === collaborator.userId && "(You)"}
             </div>
           ))}
-          <Chat/>
+          <Chat socket={socket}/>
           <div className="video-call">📹 Video Call</div>
         </aside>
       </div>
