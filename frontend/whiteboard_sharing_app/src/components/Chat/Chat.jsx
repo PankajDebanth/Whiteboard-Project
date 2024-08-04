@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import "./Chat.css";
 
 const Chat = ({ socket }) => {
@@ -53,6 +54,10 @@ const Chat = ({ socket }) => {
       </div>
     </div>
   );
+};
+
+Chat.propTypes = {
+  socket: PropTypes.object.isRequired,
 };
 
 export default Chat;
