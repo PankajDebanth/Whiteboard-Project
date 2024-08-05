@@ -85,3 +85,8 @@ button:hover {
     background: #5711b0;
     transform: translateY(-3px);
 }
+.toast-style {
+    border-radius: 10px;
+    background: #333;
+    color: #fff;
+  }

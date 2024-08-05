@@ -1,0 +1,109 @@
+.chat {
+ width: 100%;
+ margin-top: 20px;
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.chat-header {
+ font-weight: bold;
+ margin-bottom: 10px;
+}
+
+.chat-messages {
+ width: 100%;
+ flex: 1;
+ border: 1px solid #ddd;
+ margin-bottom: 10px;
+ padding: 10px;
+ background-color: #fff;
+ border-radius: 8px;
+ overflow-y: scroll; /* Allow scrolling */
+ max-height: 229px; /* Set a fixed height */
+ justify-content: flex-start;
+ width: 100%; /* Make each message take full width */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.chat-messages::-webkit-scrollbar {
+ width: 0;
+ height: 0;
+}
+
+/* Hide scrollbar for Firefox */
+.chat-messages {
+ scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.chat-messages {
+ -ms-overflow-style: none;
+}
+
+.chat-input-container {
+ position: relative;
+ width: 100%;
+}
+
+.chat-input {
+ width: 100%;
+ padding: 10px;
+ padding-right: 40px; /* Add some padding to the right to make space for the icon */
+ border: 1px solid #ddd;
+ border-radius: 8px; /* Rounded corners */
+ outline: none;
+ resize: none; /* Prevent resizing */
+ overflow-y: scroll; /* Allow scrolling */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.chat-input::-webkit-scrollbar {
+ width: 0;
+ height: 0;
+}
+
+/* Hide scrollbar for Firefox */
+.chat-input {
+ scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.chat-input {
+ -ms-overflow-style: none;
+}
+
+.chat-send-icon {
+ position: absolute;
+ right: 10px;
+ top: 50%;
+ transform: translateY(-50%);
+ background-color: transparent; /* Transparent background */
+ color: #3f51b5; /* Match the icon color to your theme */
+ cursor: pointer;
+ font-size: 16px; /* Adjust the icon size if needed */
+}
+
+/* Styles for chat messages */
+.chat-message {
+ padding: 10px;
+ margin: 5px 0;
+ border-radius: 10px;
+ max-width: 60%;
+ word-wrap: break-word;
+}
+
+/* Styles for messages from others */
+.chat-message.left {
+ background-color: #e1e1e1;
+ align-self: flex-start;
+}
+
+/* Styles for messages from "You" */
+.chat-message.right {
+ background-color: #007bff;
+ color: #fff;
+ align-self: flex-end;
+ max-width: 220px;
+}
