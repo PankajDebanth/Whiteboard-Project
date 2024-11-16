@@ -6,7 +6,7 @@ import RoomPage from "./pages/RoomPage";
 import io from "socket.io-client";
 import { Toaster, toast } from "react-hot-toast";
 
-const server = "http://localhost:5000";
+const server = "https://real-time-whiteboard-sharing-app.onrender.com";
 const connectionOptions = {
   "force new connection": true,
   reconnectionAttempts: "Infinity",
